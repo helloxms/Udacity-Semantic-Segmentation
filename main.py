@@ -18,6 +18,19 @@ else:
     print('Default GPU Device: {}'.format(tf.test.gpu_device_name()))
 
 
+L2_REG = 1e-5
+STDEV = 1e-3
+KEEP_PROB = 0.5
+LEARNING_RATE = 1e-4
+EPOCHS = 20
+BATCH_SIZE = 16
+IMAGE_SHAPE = (160, 576)
+NUM_CLASSES = 2
+
+DATA_DIR = './data'
+RUNS_DIR = './runs'
+MODEL_DIR = './models_3col'
+    
 def load_vgg(sess, vgg_path):
     """
     Load Pretrained VGG Model into TensorFlow.
@@ -33,9 +46,17 @@ def load_vgg(sess, vgg_path):
     vgg_layer3_out_tensor_name = 'layer3_out:0'
     vgg_layer4_out_tensor_name = 'layer4_out:0'
     vgg_layer7_out_tensor_name = 'layer7_out:0'
-    
-    return None, None, None, None, None
-#tests.test_load_vgg(load_vgg, tf)
+    graph = tf.get_default_graph()
+    tf.saved_model.loader.load(sess, [vgg_tag], vgg_path)
+    input = graph.get_tensor_by_name(vgg_input_tensor_name)
+    keep_prob = graph.get_tensor_by_name(vgg_keep_prob_tensor_name)
+    layer3 = graph.get_tensor_by_name(vgg_layer3_out_tensor_name)
+    layer4 = graph.get_tensor_by_name(vgg_layer4_out_tensor_name)
+    layer7 = graph.get_tensor_by_name(vgg_layer7_out_tensor_name)
+    return input, keep_prob, layer3, layer4, layer7
+
+print("Load VGG16 model\n")
+tests.test_load_vgg(load_vgg, tf)
 
 
 def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
@@ -120,4 +141,5 @@ def run():
 
 
 if __name__ == '__main__':
+    print("main ")
     run()
