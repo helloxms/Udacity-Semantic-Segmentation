@@ -68,3 +68,42 @@ If you are unfamiliar with GitHub , Udacity has a brief [GitHub tutorial](http:/
 To learn about REAMDE files and Markdown, Udacity provides a free [course on READMEs](https://www.udacity.com/courses/ud777), as well. 
 
 GitHub also provides a [tutorial](https://guides.github.com/features/mastering-markdown/) about creating Markdown files.
+
+
+
+In this project, we use a FCN based on vgg-16 image classifier architecture to identify
+the road area.
+
+#### Architecture
+1. FCN-VGG16
+2. converting the final fully connected layer to a 1x1 convolution and setting
+the depth equal to the number of desired class
+3. Use skip connections
+4. each layer add a kernel initializer and regularizer
+
+#### Optimizer
+1. cross-entropy loss function
+2. Adam optimizer
+
+#### Training Param
+1. keep_prob 0.5
+2. learning_rate 0.001
+3. epochs 10
+4. batch_size 5
+
+#### Training Result && Test ouput
+
+1. loss value per batch changed from 0.2 to 0.05 after 10 epochs's training.
+2. latest test output saved to ./runs_latest and an insufficient test output
+saved to ./runs_result.
+3. Here is the compare by a Sufficient training and an Insufficient training
+
+
+- Sufficient training
+![result display](https://github.com/helloxms/Udacity-Semantic-Segmentation/tree/master/runs_latest/uu_000042.png "Sufficient training result")
+
+- Insufficient training
+![result display](https://github.com/helloxms/Udacity-Semantic-Segmentation/tree/master/runs_result/uu_000042.png "Insufficient training result")
+
+
+
