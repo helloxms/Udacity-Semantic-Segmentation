@@ -70,6 +70,7 @@ To learn about REAMDE files and Markdown, Udacity provides a free [course on REA
 GitHub also provides a [tutorial](https://guides.github.com/features/mastering-markdown/) about creating Markdown files.
 
 
+### My Workflow
 
 In this project, we use a FCN based on vgg-16 image classifier architecture to identify
 the road area.
