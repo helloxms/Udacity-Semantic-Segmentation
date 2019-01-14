@@ -63,36 +63,36 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     # TODO: Implement function
     #conv_1x1 a one by one converlution of vgg layer7
     layer7_out = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, padding='same', 
-    															kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-    															kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
+    															kernel_initializer= tf.random_normal_initializer(stddev=0.001),
+    															kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-5))
     															
     # upsample
     layer4_in1 = tf.layers.conv2d_transpose(layer7_out, num_classes, 4, strides=(2,2), padding='same',
-    																				kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-    																				kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
+    																				kernel_initializer= tf.random_normal_initializer(stddev=0.001),
+    																				kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-5))
     
     # convolution of vgg layer 4
     # one by one convolution of vgg layer4
     layer4_in2 = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, padding='same', 
-    															kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-    															kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
+    															kernel_initializer= tf.random_normal_initializer(stddev=0.001),
+    															kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-5))
     #skip connection
     layer4_out = tf.add(layer4_in1, layer4_in2)
     #upsample
     layer3_in1 = tf.layers.conv2d_transpose(layer4_out, num_classes, 4, strides=(2,2), padding='same',
-    																				kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-    																				kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
+    																				kernel_initializer= tf.random_normal_initializer(stddev=0.001),
+    																				kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-5))
     
     # convolution of vgg layer 3																				
     layer3_in2 = tf.layers.conv2d(vgg_layer3_out, num_classes, 1, padding= 'same',
-    														 kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-    														 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
+    														 kernel_initializer= tf.random_normal_initializer(stddev=0.001),
+    														 kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-5))
     #skip connection 
     layer3_out = tf.add(layer3_in1, layer3_in2)
     #upsample
     nn_last_layer = tf.layers.conv2d_transpose(layer3_out, num_classes, 16, strides=(8,8), padding='same',
-    																					kernel_initializer= tf.random_normal_initializer(stddev=0.01),
-    																					kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-3))
+    																					kernel_initializer= tf.random_normal_initializer(stddev=0.001),
+    																					kernel_regularizer= tf.contrib.layers.l2_regularizer(1e-5))
     return nn_last_layer
     																																									
 print("test layers")    
@@ -144,7 +144,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     for i in range(epochs):
     	for image, label in get_batches_fn(batch_size):
     		_, loss = sess.run([train_op, cross_entropy_loss],
-    												feed_dict={input_image: image, correct_label: label,keep_prob: 0.5,learning_rate: 0.001}
+    												feed_dict={input_image: image, correct_label: label,keep_prob: 0.5,learning_rate: 0.0001}
     												)
     		print("Loss: ={:.3f}".format(loss))
     										
@@ -184,8 +184,8 @@ def run():
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
         # TODO: Build NN using load_vgg, layers, and optimize function
-        epochs = 1
-        batch_size = 5			
+        epochs = 20
+        batch_size = 8			
         # TF placeholders
         correct_label = tf.placeholder(tf.int32, [None, None, None, num_classes], name='correct_label')
         learning_rate = tf.placeholder(tf.float32, name='learning_rate')
